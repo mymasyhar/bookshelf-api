@@ -33,17 +33,6 @@ const addBooksHandler = (request, h) => {
     updatedAt,
   };
   books.push(newBook);
-
-  const nameValidate = books.filter((book) => book.name.trim() === '');
-  if (nameValidate) {
-    const response = h.response({
-      status: 'fail',
-      message: 'Gagal menambahkan buku. Mohon isi nama buku',
-    });
-    response.code(400);
-    return response;
-  }
-
   const response = h.response({
     status: 'success',
     message: 'book added',
@@ -51,7 +40,6 @@ const addBooksHandler = (request, h) => {
       bookId: id,
     },
   });
-  console.log(nameValidate);
   response.code(201);
   return response;
 
