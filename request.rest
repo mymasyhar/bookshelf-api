@@ -1,0 +1,11 @@
+POST http://localhost:5000/books
+Content-Type: "application/json"
+{
+    "name" : "Book test",
+    "year" : 2022,
+    "author": "Masyhar",
+    "summary": "Book Summary test",
+    "publisher": "Publisher Test",
+    "pageCount": 200,
+    "readPage": 100
+}
