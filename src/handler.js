@@ -13,8 +13,8 @@ const addBooksHandler = (request, h) => {
     readPage,
     reading,
   } = request.payload;
-  const finished = false;
-  const id = nanoid(8);
+  const finished = (readPage === pageCount) ? 'true' : false;
+  const id = nanoid(16);
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
 
@@ -32,39 +32,8 @@ const addBooksHandler = (request, h) => {
     insertedAt,
     updatedAt,
   };
-  books.push(newBook);
-  const response = h.response({
-    status: 'success',
-    message: 'book added',
-    data: {
-      bookId: id,
-    },
-  });
-  response.code(201);
-  return response;
 
-  //   const bookNameValidate = books.filter((book) => book.name !== '');
-
-  //   if (bookNameValidate) {
-  //     const response = h.response({
-  //       status: 'fail',
-  //       message: 'Gagal menambahkan buku. Mohon isi nama buku',
-  //     });
-  //     response.code(400);
-  //     return response;
-  //   }
-  //   const response = h.response({
-  //     status: 'success',
-  //     message: 'book added',
-  //     data: {
-  //       bookId: id,
-  //     },
-  //   });
-  //   response.code(201);
-  //   return response;
-
-  /*
-  if (bookNameValidate) {
+  if (!name) {
     const response = h.response({
       status: 'fail',
       message: 'Gagal menambahkan buku. Mohon isi nama buku',
@@ -72,10 +41,7 @@ const addBooksHandler = (request, h) => {
     response.code(400);
     return response;
   }
-  */
-
-  /*
-  if (bookPageValidate) {
+  if (readPage > pageCount) {
     const response = h.response({
       status: 'fail',
       message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
@@ -83,10 +49,32 @@ const addBooksHandler = (request, h) => {
     response.code(400);
     return response;
   }
-  */
+  books.push(newBook);
+  const validate = books.filter((book) => book.id === id).length > 0;
+  if (validate) {
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil ditambahkan',
+      data: {
+        bookId: id,
+      },
+    });
+    response.code(201);
+    return response;
+  }
+  const response = h.response({
+    status: 'error',
+    message: 'Buku gagal ditambahkan',
+  });
+  response.code(500);
+  return response;
 };
-// eslint-disable-next-line no-unused-vars
-// const getAllBooksHandler = () => {};
 
+const getAllBooksHandler = () => ({
+  status: 'success',
+  data: {
+    books,
+  },
+});
 // eslint-disable-next-line import/prefer-default-export
-export { addBooksHandler };
+export { addBooksHandler, getAllBooksHandler };
