@@ -23,6 +23,11 @@ const routes = [
     handler: getSpecifiedBookHandler,
   },
   {
+    method: 'GET',
+    path: '/books{name?}',
+    handler: getAllBooksHandler,
+  },
+  {
     method: 'PUT',
     path: '/books/{id}',
     handler: editBookByIdHandler,
